@@ -150,7 +150,7 @@ public class EventServiceImpl implements EventService {
 
         return EventMapper.toEventFullDto(eventRepository
                 .findAdminEvents(users == null ? null : Arrays.asList(users),
-                        states == null ? null: Arrays.asList(states),
+                        states == null ? null : Arrays.asList(states),
                         categories == null ? null : Arrays.asList(categories),
                         rangeStart, rangeEnd, page));
     }

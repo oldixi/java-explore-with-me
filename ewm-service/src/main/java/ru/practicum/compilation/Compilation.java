@@ -43,12 +43,12 @@ public class Compilation {
             inverseJoinColumns = { @JoinColumn(name = "event_id") })
     private Set<Event> events = new HashSet<>();
 
-    public void addEvent(Event event){
+    public void addEvent(Event event) {
         this.events.add(event);
         event.getCompilations().add(this);
     }
 
-    public void removeEvent(Event event){
+    public void removeEvent(Event event) {
         this.events.remove(event);
         event.getCompilations().remove(this);
     }
