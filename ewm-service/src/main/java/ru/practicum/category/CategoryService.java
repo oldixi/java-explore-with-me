@@ -1,12 +1,10 @@
 package ru.practicum.category;
 
-import org.springframework.stereotype.Service;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.dto.NewCategoryDto;
 
 import java.util.List;
 
-@Service
 public interface CategoryService {
     CategoryDto createCategory(NewCategoryDto categoryDto);
 

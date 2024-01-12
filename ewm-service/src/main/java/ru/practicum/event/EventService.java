@@ -1,6 +1,5 @@
 package ru.practicum.event;
 
-import org.springframework.stereotype.Service;
 import ru.practicum.event.dto.EventFullDto;
 import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.event.dto.NewEventDto;
@@ -9,7 +8,6 @@ import ru.practicum.event.dto.UpdateEventUserRequest;
 
 import java.util.List;
 
-@Service
 public interface EventService {
     EventFullDto createEvent(int userId, NewEventDto eventDto);
 

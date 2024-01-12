@@ -29,40 +29,18 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public CompilationDto createCompilation(NewCompilationDto compilationDto) {
-        Compilation compilation = CompilationMapper.toCompilation(compilationDto);
-        compilation.setEvents(new HashSet<>());
-
-        Set<Integer> eventsId = compilationDto.getEvents();
-        if (eventsId != null && !eventsId.isEmpty()) {
-            compilationDto.getEvents().forEach((eventId) -> {
-                Event event = eventRepository
-                        .findById(eventId)
-                        .orElseThrow(() -> new ObjectNotFoundException(eventId, "Event with id{} was not found"));
-
-                compilation.addEvent(event);
-            });
-        }
-        return CompilationMapper.toCompilationDto(compilationRepository.save(compilation));
+        return CompilationMapper.toCompilationDto(compilationRepository
+                .save(addEventsInCompilation(CompilationMapper.toCompilation(compilationDto), compilationDto.getEvents())));
     }
 
     @Override
     public CompilationDto updateCompilation(int compId, UpdateCompilationRequest compilationDto) {
         Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new ObjectNotFoundException(compId, "Category with id " + compId + " was not found"));
-        compilation.setEvents(new HashSet<>());
 
-        Set<Integer> eventsId = compilationDto.getEvents();
-        if (eventsId != null && !eventsId.isEmpty()) {
-            compilationDto.getEvents().forEach((eventId) -> {
-                Event event = eventRepository
-                        .findById(eventId)
-                        .orElseThrow(() -> new ObjectNotFoundException(eventId, "Event with id{} was not found"));
-
-                compilation.addEvent(event);
-            });
-        }
         return CompilationMapper.toCompilationDto(compilationRepository
-                .save(CompilationMapper.toCompilation(compilationDto, compilation)));
+                .save(CompilationMapper.toCompilation(compilationDto,
+                        addEventsInCompilation(compilation, compilationDto.getEvents()))));
     }
 
     @Override
@@ -70,6 +48,7 @@ public class CompilationServiceImpl implements CompilationService {
         Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new ObjectNotFoundException(compId, "Category with id " + compId + " was not found"));
         compilation.getEvents().forEach(compilation::removeEvent);
+
         compilationRepository.deleteById(compId);
     }
 
@@ -92,5 +71,21 @@ public class CompilationServiceImpl implements CompilationService {
         Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new ObjectNotFoundException(compId, "Category with id " + compId + " was not found"));
         return CompilationMapper.toCompilationDto(compilation);
+    }
+
+    @Transactional(readOnly = true)
+    private Compilation addEventsInCompilation(Compilation compilation, Set<Integer> eventsId) {
+        compilation.setEvents(new HashSet<>());
+
+        if (eventsId != null && !eventsId.isEmpty()) {
+            eventsId.forEach((eventId) -> {
+                Event event = eventRepository
+                        .findById(eventId)
+                        .orElseThrow(() -> new ObjectNotFoundException(eventId, "Event with id{} was not found"));
+
+                compilation.addEvent(event);
+            });
+        }
+        return compilation;
     }
 }

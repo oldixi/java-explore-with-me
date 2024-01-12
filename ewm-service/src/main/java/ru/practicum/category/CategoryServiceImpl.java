@@ -15,7 +15,7 @@ import ru.practicum.exception.InvalidEventStateOrDate;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
@@ -51,12 +51,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDto> getCategories(int from, int size) {
         final Pageable page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "id"));
         return CategoryMapper.toCategoryDto(categoryRepository.findAll(page));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryDto getCategoryById(int categoryId) {
         return CategoryMapper.toCategoryDto(categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ObjectNotFoundException(categoryId,

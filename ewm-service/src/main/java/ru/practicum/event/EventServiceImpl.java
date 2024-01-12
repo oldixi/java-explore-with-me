@@ -53,6 +53,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventShortDto> findPublicEvents(String text,
                                                 Integer[] categories,
                                                 Boolean paid,
@@ -125,6 +126,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventFullDto> findAdminEvents(Integer[] users,
                                                String[] states,
                                                Integer[] categories,
@@ -183,12 +185,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventShortDto> findByUserId(int userId, int from, int size) {
         Pageable page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "id"));
         return EventMapper.toEventShortDto(eventRepository.findByUserId(userId, page));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EventFullDto findByIdAndUserId(int eventId, int userId) {
         return EventMapper.toEventFullDto(eventRepository.findByIdAndUserId(eventId, userId)
                 .orElseThrow(() -> new ObjectNotFoundException(eventId,
@@ -237,6 +241,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Event getEventById(int eventId) {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new ObjectNotFoundException(eventId, "Event with id " + eventId + " was not found"));
