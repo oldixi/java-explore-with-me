@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.practicum.DateFormatter;
 import ru.practicum.category.Category;
 import ru.practicum.category.CategoryMapper;
@@ -27,8 +26,6 @@ import ru.practicum.location.LocationRepository;
 import ru.practicum.user.User;
 import ru.practicum.user.UserService;
 
-import javax.persistence.ParameterMode;
-import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
