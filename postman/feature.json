@@ -1532,7 +1532,7 @@
 									"});\r",
 									"\r",
 									"pm.sendRequest({\r",
-									"            url: pm.collectionVariables.get(\"baseUrl\") + \"/places/\" + placeId,\r",
+									"            url: pm.collectionVariables.get(\"baseUrl\") + \"/admin/places/\" + placeId,\r",
 									"            method: 'GET',\r",
 									"        }, (error, response) => {\r",
 									"            pm.test(\"Локация не должна быть найдена после удаления\", function () {\r",
@@ -1569,7 +1569,7 @@
 								}
 							]
 						},
-						"description": "Обратите внимание: с категорий не должно быть связано ни одного события."
+						"description": "Удаление локации"
 					},
 					"response": []
 				},
