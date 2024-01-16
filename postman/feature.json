@@ -1528,7 +1528,7 @@
 									"placeId = pm.collectionVariables.get('placeId');\r",
 									"\r",
 									"pm.test(\"Локация должна быть найдена до удаления\", function () {\r",
-									"    pm.expect(source.id).equal(placeId, 'Идентификтор локации должен совпадать с удаляемым');\r",
+									"    pm.expect(source.id).equal(Number(place.id), 'Идентификтор локации должен совпадать с удаляемым');\r",
 									"});\r",
 									"\r",
 									"pm.sendRequest({\r",
