@@ -1491,7 +1491,7 @@
 									"    try {\r",
 									"        const place = await api.addPlace(rnd.getPlace());\r",
 									"        const findedPlace = await api.findPlace(place.id);\r",
-									"        pm.collectionVariables.set(\"placeId\", Number(place.id))\r",
+									"        pm.collectionVariables.set(\"placeId\", place.id)\r",
 									"        pm.collectionVariables.set(\"response\", findedPlace)\r",
 									"    } catch(err) {\r",
 									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
