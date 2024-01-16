@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.practicum.DateFormatter;
 import ru.practicum.category.Category;
 import ru.practicum.category.CategoryMapper;
@@ -26,6 +27,8 @@ import ru.practicum.location.LocationRepository;
 import ru.practicum.user.User;
 import ru.practicum.user.UserService;
 
+import javax.persistence.ParameterMode;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,12 +131,12 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional(readOnly = true)
     public List<EventFullDto> findAdminEvents(Integer[] users,
-                                               String[] states,
-                                               Integer[] categories,
-                                               String rangeStart,
-                                               String rangeEnd,
-                                               int from,
-                                               int size) {
+                                              String[] states,
+                                              Integer[] categories,
+                                              String rangeStart,
+                                              String rangeEnd,
+                                              int from,
+                                              int size) {
         Pageable page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "id"));
 
         if (categories != null) {
@@ -245,5 +248,19 @@ public class EventServiceImpl implements EventService {
     public Event getEventById(int eventId) {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new ObjectNotFoundException(eventId, "Event with id " + eventId + " was not found"));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<EventFullDto> findEventsByPlaceId(int placeId, int from, int size) {
+        Pageable page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "id"));
+        return EventMapper.toEventFullDto(eventRepository.findEventsByPlaceId(placeId, page));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<EventFullDto> findEventsByPlaceName(String placeName, int from, int size) {
+        Pageable page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "id"));
+        return EventMapper.toEventFullDto(eventRepository.findEventsByPlaceName(placeName, page));
     }
 }

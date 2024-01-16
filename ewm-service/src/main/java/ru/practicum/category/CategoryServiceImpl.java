@@ -22,13 +22,11 @@ public class CategoryServiceImpl implements CategoryService {
     private final EventRepository eventRepository;
 
     @Override
-    @Transactional
     public CategoryDto createCategory(NewCategoryDto category) {
         return CategoryMapper.toCategoryDto(categoryRepository.save(CategoryMapper.toCategory(category)));
     }
 
     @Override
-    @Transactional
     public CategoryDto updateCategory(int categoryId, CategoryDto categoryDto) {
         return CategoryMapper.toCategoryDto(categoryRepository.save(CategoryMapper.toCategory(categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ObjectNotFoundException(categoryId,
@@ -37,7 +35,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional
     public void deleteCategory(int categoryId) {
         categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ObjectNotFoundException(categoryId,
