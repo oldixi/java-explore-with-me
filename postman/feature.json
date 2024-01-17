@@ -1481,6 +1481,32 @@
 					"name": "Удаление локации",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"const source = pm.collectionVariables.get('response');\r",
+									"const placeId = pm.collectionVariables.get('placeId');\r",
+									"\r",
+									"pm.test(\"Локация должна быть найден до выполнения запроса\", function(){\r",
+									"    pm.expect(source.id).to.eql(placeId);\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"            url: pm.collectionVariables.get(\"baseUrl\") + \"/admin/places/\" + placeId,\r",
+									"            method: 'GET',\r",
+									"        }, (error, response) => {\r",
+									"            pm.test(\"Категория не должна быть найдена после удаления\", function () {\r",
+									"                pm.expect(response.code).to.eql(404);\r",
+									"            });\r",
+									"        });"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
@@ -1490,9 +1516,9 @@
 									"\r",
 									"    try {\r",
 									"        const place = await api.addPlace(rnd.getPlace());\r",
-									"        const findedPlace = await api.findPlace(place.id);\r",
-									"        pm.collectionVariables.set(\"placeId\", place.id)\r",
-									"        pm.collectionVariables.set(\"response\", findedPlace)\r",
+									"        const foundedPlace = await api.findPlace(place.id);\r",
+									"        pm.collectionVariables.set(\"placeId\", place.id);\r",
+									"        pm.collectionVariables.set(\"response\", foundedPlace)\r",
 									"    } catch(err) {\r",
 									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
 									"    }\r",
@@ -1512,33 +1538,6 @@
 									"    },  \r",
 									"    100 \r",
 									");"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 204\", function () {\r",
-									"    pm.response.to.have.status(204);\r",
-									"});\r",
-									"\r",
-									"source = pm.collectionVariables.get('response');\r",
-									"placeId = pm.collectionVariables.get('placeId');\r",
-									"\r",
-									"pm.test(\"Локация должна быть найдена до удаления\", function () {\r",
-									"    pm.expect(source.id).equal(placeId, 'Идентификтор локации должен совпадать с удаляемым');\r",
-									"});\r",
-									"\r",
-									"pm.sendRequest({\r",
-									"            url: pm.collectionVariables.get(\"baseUrl\") + \"/places/\" + placeId,\r",
-									"            method: 'GET',\r",
-									"        }, (error, response) => {\r",
-									"            pm.test(\"Локация не должна быть найдена после удаления\", function () {\r",
-									"                pm.expect(response.code).to.eql(404);\r",
-									"            });\r",
-									"        });"
 								],
 								"type": "text/javascript"
 							}
@@ -1568,8 +1567,7 @@
 									"value": "{{placeId}}"
 								}
 							]
-						},
-						"description": "Обратите внимание: с категорий не должно быть связано ни одного события."
+						}
 					},
 					"response": []
 				},
