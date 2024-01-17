@@ -1,6 +1,5 @@
 package ru.practicum.eventsinplace;
 
-import ru.practicum.event.EventMapper;
 import ru.practicum.event.dto.EventFullDto;
 
 import java.util.List;
