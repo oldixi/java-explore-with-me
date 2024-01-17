@@ -36,7 +36,6 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final LocationRepository locationRepository;
@@ -45,6 +44,7 @@ public class EventServiceImpl implements EventService {
     private final EventsInPlaceRepository eventsInPlaceRepository;
 
     @Override
+    @Transactional
     public EventFullDto findByIdAndState(int eventId) {
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
                 .orElseThrow(() -> new ObjectNotFoundException(eventId, "Event with id " + eventId + " was not found"));
@@ -56,7 +56,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<EventShortDto> findPublicEvents(String text,
                                                 Integer[] categories,
                                                 Boolean paid,
@@ -88,6 +87,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto updateEventByAdmin(int eventId, UpdateEventAdminRequest eventDto) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ObjectNotFoundException(eventId, "Event with id " + eventId + " was not found"));
@@ -161,6 +161,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto createEvent(int userId, NewEventDto eventDto) {
         LocalDateTime now = LocalDateTime.now();
 
@@ -188,14 +189,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<EventShortDto> findByUserId(int userId, int from, int size) {
         Pageable page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "id"));
         return EventMapper.toEventShortDto(eventRepository.findByUserId(userId, page));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public EventFullDto findByIdAndUserId(int eventId, int userId) {
         return EventMapper.toEventFullDto(eventRepository.findByIdAndUserId(eventId, userId)
                 .orElseThrow(() -> new ObjectNotFoundException(eventId,
@@ -203,6 +202,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto updateUserEvent(int userId, int eventId, UpdateEventUserRequest eventDto) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ObjectNotFoundException(eventId, "Event with id " + eventId + " was not found"));
@@ -244,20 +244,17 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Event getEventById(int eventId) {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new ObjectNotFoundException(eventId, "Event with id " + eventId + " was not found"));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<EventFullDto> findEventsByPlaceId(int placeId, int from, int size) {
         return EventsInPlaceMapper.toEventFullDto(eventsInPlaceRepository.findEventsByPlaceId(placeId, from, size));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<EventFullDto> findEventsByPlaceName(String placeName, int from, int size) {
         return EventsInPlaceMapper.toEventFullDto(eventsInPlaceRepository.findEventsByPlaceName(placeName, from, size));
     }

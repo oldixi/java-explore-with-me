@@ -13,17 +13,18 @@ import ru.practicum.place.dto.PlaceDto;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
 
     @Override
+    @Transactional
     public PlaceDto createPlace(NewPlaceDto placeDto) {
         return PlaceMapper.toPlaceDto(placeRepository.save(PlaceMapper.toPlace(placeDto)));
     }
 
     @Override
+    @Transactional
     public PlaceDto updatePlace(int placeId, PlaceDto placeDto) {
         return PlaceMapper.toPlaceDto(placeRepository.save(PlaceMapper.toPlace(placeRepository.findById(placeId)
                         .orElseThrow(() -> new ObjectNotFoundException(placeId,
@@ -32,6 +33,7 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
+    @Transactional
     public void deletePlace(int placeId) {
         placeRepository.findById(placeId)
                 .orElseThrow(() -> new ObjectNotFoundException(placeId,
@@ -41,14 +43,12 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<PlaceDto> getPlaces(int from, int size) {
         final Pageable page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "id"));
         return PlaceMapper.toPlaceDto(placeRepository.findAll(page));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public PlaceDto getPlaceById(int placeId) {
         return PlaceMapper.toPlaceDto(placeRepository.findById(placeId)
                 .orElseThrow(() -> new ObjectNotFoundException(placeId,

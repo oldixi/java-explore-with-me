@@ -52,18 +52,8 @@ public class EventsInPlace {
     private boolean requestModeration;
 
     private String description;
+
     private int views;
+
     private LocationDto location;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof EventsInPlace)) return false;
-        return id == (((EventsInPlace) o).getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }
