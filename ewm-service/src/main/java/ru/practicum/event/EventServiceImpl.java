@@ -253,16 +253,12 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional(readOnly = true)
     public List<EventFullDto> findEventsByPlaceId(int placeId, int from, int size) {
-        //Pageable page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "id"));
-        //return EventMapper.toEventFullDto(eventRepository.findEventsByPlaceId(placeId, page));
         return EventsInPlaceMapper.toEventFullDto(eventsInPlaceRepository.findEventsByPlaceId(placeId, from, size));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<EventFullDto> findEventsByPlaceName(String placeName, int from, int size) {
-        //Pageable page = PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "id"));
-        //return EventMapper.toEventFullDto(eventRepository.findEventsByPlaceName(placeName, page));
         return EventsInPlaceMapper.toEventFullDto(eventsInPlaceRepository.findEventsByPlaceName(placeName, from, size));
     }
 }

@@ -59,10 +59,4 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     Optional<Event> findByIdAndUserId(int eventId, int userId);
 
     List<Event> findByCategoryId(int catId);
-
-    @Query(value = "select * from getEventsByPlaceId(:placeId)", nativeQuery = true)
-    Page<Event> findEventsByPlaceId(@Param("placeId") int placeId, Pageable page);
-
-    @Query(value = "select * from getEventsByPlaceName(:placeName)", nativeQuery = true)
-    Page<Event> findEventsByPlaceName(@Param("placeName") String placeName, Pageable page);
 }
