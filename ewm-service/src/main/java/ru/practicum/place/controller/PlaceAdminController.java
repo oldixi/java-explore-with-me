@@ -55,14 +55,14 @@ public class PlaceAdminController {
     @Transactional(readOnly = true)
     public List<PlaceDto> getPlaces(@PositiveOrZero @RequestParam(defaultValue = "0") int from,
                                     @Positive @RequestParam(defaultValue = "10") int size) {
-        log.info("Request for get categories from={} size={}", from, size);
+        log.info("Request for get locations from={} size={}", from, size);
         return placeService.getPlaces(from, size);
     }
 
     @GetMapping("/{placeId}")
     @Transactional(readOnly = true)
     public PlaceDto getPlaceById(@Positive @PathVariable int placeId) {
-        log.info("Request for get category {}", placeId);
+        log.info("Request for get location {}", placeId);
         return placeService.getPlaceById(placeId);
     }
 }
