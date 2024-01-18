@@ -38,3 +38,11 @@ _API для администраторов_ предназначено для н
 
 ## **Схема базы данных** 
 ![Схема базы данных](java-explore-with-me.png)
+
+## _Технологии проекта_
+> Spring Boot 2.7.5<br>
+> Spring Data JPA, Hibernate<br>
+> JDBC Template<br>
+> Java version 11<br>
+> PostrgeSQL 14<br>
+> Docker-compose<br>
