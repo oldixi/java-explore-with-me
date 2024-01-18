@@ -34,10 +34,14 @@ public interface EventService {
     EventFullDto updateEventByAdmin(int eventId, UpdateEventAdminRequest eventDto);
 
     List<EventFullDto> findAdminEvents(Integer[] users,
-                                        String[] states,
-                                        Integer[] categories,
-                                        String rangeStart,
-                                        String rangeEnd,
-                                        int from,
-                                        int size);
+                                       String[] states,
+                                       Integer[] categories,
+                                       String rangeStart,
+                                       String rangeEnd,
+                                       int from,
+                                       int size);
+
+    List<EventFullDto> findEventsByPlaceId(int placeId, int from, int size);
+
+    List<EventFullDto> findEventsByPlaceName(String placeName, int from, int size);
 }
